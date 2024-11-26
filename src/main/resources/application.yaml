@@ -8,3 +8,8 @@ spring:
     url: "jdbc:mysql://localhost:3306/scaffold"
     username: root
     password: Pierce Le
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
