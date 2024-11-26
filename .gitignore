@@ -1,1 +1,7 @@
 .idea
+# macOS files
+.DS_Store
+
+# Maven wrapper (optional)
+mvnw
+mvnw.cmd
