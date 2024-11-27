@@ -16,7 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Users createRequest(UserCreationRequest request) {
+    public Users createUser(UserCreationRequest request) {
         Users user = new Users();
 
         user.setUsername(request.getUsername());
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public Users getUserById(String id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
     }
 
     public Users updateUser(String id, UserUpdateRequest request) {
