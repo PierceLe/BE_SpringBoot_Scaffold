@@ -5,7 +5,6 @@ import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
 import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.service.UserService;
 import lombok.NonNull;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
