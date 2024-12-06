@@ -25,6 +25,7 @@ public class UserController {
     public List<Users> getAllUsers() {
         return userService.getAllUsers();
     }
+
     @GetMapping("/{id}")
     public Users getUserById(
             @PathVariable @NonNull String id

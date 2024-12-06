@@ -10,4 +10,6 @@ public class GlobalExceptionHandler {
     ResponseEntity<String> handlingRuntimeException(RuntimeException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
+
+
 }
