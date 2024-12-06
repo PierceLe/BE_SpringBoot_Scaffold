@@ -4,6 +4,7 @@ import com.scaffold.spring_boot.dto.request.UserCreationRequest;
 import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
 import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.service.UserService;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public Users createUser(@RequestBody UserCreationRequest userCreationRequest) {
+    public Users createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
         return userService.createUser(userCreationRequest);
     }
 
@@ -25,6 +26,7 @@ public class UserController {
     public List<Users> getAllUsers() {
         return userService.getAllUsers();
     }
+
     @GetMapping("/{id}")
     public Users getUserById(
             @PathVariable @NonNull String id
