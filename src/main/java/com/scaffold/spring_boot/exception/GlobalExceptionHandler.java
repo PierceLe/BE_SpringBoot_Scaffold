@@ -9,6 +9,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    //Exception
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponse> handlingException(RuntimeException e) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+        // bad request
+        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+        return ResponseEntity.badRequest().body(apiResponse);
+    }
+    //Runtime Exception
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException e) {
         ApiResponse apiResponse = new ApiResponse();
@@ -18,14 +28,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
+    // MethodArgumentNotValidException
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handlingValidationException(MethodArgumentNotValidException e) {
+        String enumKey = e.getFieldError().getDefaultMessage();
+        ErrorCode errorCode = ErrorCode.valueOf(enumKey);
         ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setMessage(e.getMessage());
-        apiResponse.setCode(400);
+        apiResponse.setMessage(errorCode.getMessage());
+        apiResponse.setCode(errorCode.getCode());
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
+    // AppException
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingAppException(AppException e) {
         ErrorCode errorCode = e.getErrorCode();
