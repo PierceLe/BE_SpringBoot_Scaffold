@@ -25,4 +25,14 @@ public class GlobalExceptionHandler {
         apiResponse.setCode(400);
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponse> handlingAppException(AppException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage(errorCode.getMessage());
+        // bad request
+        apiResponse.setCode(errorCode.getCode());
+        return ResponseEntity.status(errorCode.getCode()).body(apiResponse);
+    }
 }
