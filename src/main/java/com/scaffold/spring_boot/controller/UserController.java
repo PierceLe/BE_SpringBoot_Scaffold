@@ -1,5 +1,6 @@
 package com.scaffold.spring_boot.controller;
 
+import com.scaffold.spring_boot.dto.request.ApiResponse;
 import com.scaffold.spring_boot.dto.request.UserCreationRequest;
 import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
 import com.scaffold.spring_boot.entity.Users;
@@ -18,8 +19,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public Users createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
-        return userService.createUser(userCreationRequest);
+    public ApiResponse<Users> createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
+        ApiResponse<Users> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.createUser(userCreationRequest));
+        return apiResponse;
     }
 
     @GetMapping
