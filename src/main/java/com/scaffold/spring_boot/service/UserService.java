@@ -4,6 +4,8 @@ package com.scaffold.spring_boot.service;
 import com.scaffold.spring_boot.dto.request.UserCreationRequest;
 import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
 import com.scaffold.spring_boot.entity.Users;
+import com.scaffold.spring_boot.exception.AppException;
+import com.scaffold.spring_boot.exception.ErrorCode;
 import com.scaffold.spring_boot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class UserService {
         Users user = new Users();
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username has already existed");
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
 
         user.setUsername(request.getUsername());
