@@ -1,6 +1,6 @@
 package com.scaffold.spring_boot.exception;
 
-import jakarta.validation.ValidationException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
