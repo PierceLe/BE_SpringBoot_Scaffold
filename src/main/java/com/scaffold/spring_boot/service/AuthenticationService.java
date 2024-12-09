@@ -1,5 +1,8 @@
 package com.scaffold.spring_boot.service;
 
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jwt.JWTClaimsSet;
 import com.scaffold.spring_boot.dto.request.AuthenticationRequest;
 import com.scaffold.spring_boot.dto.response.AuthenticationResponse;
 import com.scaffold.spring_boot.entity.Users;
@@ -7,15 +10,23 @@ import com.scaffold.spring_boot.exception.AppException;
 import com.scaffold.spring_boot.exception.ErrorCode;
 import com.scaffold.spring_boot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.NonFinal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+
+    @NonFinal
+    protected static final String SIGNER_KEY = "wW4pYfEUZNCa3FcB7LMqQ4PtBQEBNaTlSK03edB12Cs3/fwJ64JNGFPvlkj6+UbI";
 
     public AuthenticationResponse authenticateUser(AuthenticationRequest authenticationRequest) {
         Users user = userRepository.findByUsername(authenticationRequest.getUsername());
@@ -26,8 +37,34 @@ public class AuthenticationService {
         if (!passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.AUTHENTICATION_FAILED);
         }
+
+        var token = generateToken(user.getUsername());
         return AuthenticationResponse.builder()
-                .success(true)
+                .token(token)
                 .build();
     }
+
+    private String generateToken(String username) {
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .subject(username)
+                .issuer("hale0087@uni.sydney.edu.au")
+                .issueTime(new Date())
+                .expirationTime(new Date(
+                        Instant.now().plus(48, ChronoUnit.HOURS).toEpochMilli()
+                ))
+                .claim("CustomClaims", "Custom")
+                .build();
+
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
+        try {
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+            return jwsObject.serialize();
+        } catch (JOSEException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
