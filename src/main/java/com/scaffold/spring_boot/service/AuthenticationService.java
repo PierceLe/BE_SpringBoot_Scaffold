@@ -15,6 +15,7 @@ import com.scaffold.spring_boot.exception.ErrorCode;
 import com.scaffold.spring_boot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class AuthenticationService {
     private final UserRepository userRepository;
 
     @NonFinal
-    protected static final String SIGNER_KEY = "wW4pYfEUZNCa3FcB7LMqQ4PtBQEBNaTlSK03edB12Cs3/fwJ64JNGFPvlkj6+UbI";
+    @Value("${jwt.signerKey}")
+    protected String SIGNER_KEY;
 
     public AuthenticationResponse authenticateUser(AuthenticationRequest authenticationRequest) {
         Users user = userRepository.findByUsername(authenticationRequest.getUsername());
