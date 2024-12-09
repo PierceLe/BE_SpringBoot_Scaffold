@@ -2,9 +2,13 @@ package com.scaffold.spring_boot.service;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import com.scaffold.spring_boot.dto.request.AuthenticationRequest;
+import com.scaffold.spring_boot.dto.request.IntrospectRequest;
 import com.scaffold.spring_boot.dto.response.AuthenticationResponse;
+import com.scaffold.spring_boot.dto.response.IntrospectResponse;
 import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.exception.AppException;
 import com.scaffold.spring_boot.exception.ErrorCode;
@@ -15,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -41,6 +46,20 @@ public class AuthenticationService {
         var token = generateToken(user.getUsername());
         return AuthenticationResponse.builder()
                 .token(token)
+                .build();
+    }
+
+    public IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException {
+        var token = introspectRequest.getToken();
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+        var verified = signedJWT.verify(verifier);
+
+        return IntrospectResponse.builder()
+                .isValid(verified && expiryTime.after(new Date()))
                 .build();
     }
 
