@@ -3,6 +3,7 @@ package com.scaffold.spring_boot.controller;
 import com.scaffold.spring_boot.dto.request.ApiResponse;
 import com.scaffold.spring_boot.dto.request.UserCreationRequest;
 import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
+import com.scaffold.spring_boot.dto.response.UserResponse;
 import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.service.UserService;
 import jakarta.validation.Valid;
@@ -18,6 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @PostMapping
     public ApiResponse<Users> createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
         ApiResponse<Users> apiResponse = new ApiResponse<>();
@@ -31,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Users getUserById(
+    public UserResponse getUserById(
             @PathVariable @NonNull String id
     ) {
         return userService.getUserById(id);

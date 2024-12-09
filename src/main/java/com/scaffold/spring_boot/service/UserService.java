@@ -3,6 +3,7 @@ package com.scaffold.spring_boot.service;
 
 import com.scaffold.spring_boot.dto.request.UserCreationRequest;
 import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
+import com.scaffold.spring_boot.dto.response.UserResponse;
 import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.exception.AppException;
 import com.scaffold.spring_boot.exception.ErrorCode;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -45,15 +47,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Users getUserById(String id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("user not found"));
+    public UserResponse getUserById(String id) {
+        return userMapper.toUserResponse(userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found")));
     }
 
-    public Users updateUser(String id, UserUpdateRequest request) {
-        Users user = getUserById(id);
+    public UserResponse updateUser(String id, UserUpdateRequest request) {
+        Users user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found"));
         userMapper.updateUser(user, request);
-        return userRepository.save(user);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     public void deleteUser(String id) {
