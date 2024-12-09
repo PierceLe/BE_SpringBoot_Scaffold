@@ -10,6 +10,8 @@ import com.scaffold.spring_boot.exception.ErrorCode;
 import com.scaffold.spring_boot.mapper.UserMapper;
 import com.scaffold.spring_boot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,8 +37,8 @@ public class UserService {
 //        user.setLastName(request.getLastName(
 // ------- same with this line----------------------------
         user = userMapper.toUser(request);
-
-
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepository.save(user);
     }
 
@@ -59,4 +61,5 @@ public class UserService {
     public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
+
 }
