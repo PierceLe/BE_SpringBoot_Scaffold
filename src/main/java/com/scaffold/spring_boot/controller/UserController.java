@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public Users updateUser(
+    public UserResponse updateUser(
             @PathVariable @NonNull String id,
             @RequestBody UserUpdateRequest userUpdateRequest
     ) {
