@@ -52,9 +52,7 @@ public class UserService {
 
     public Users updateUser(String id, UserUpdateRequest request) {
         Users user = getUserById(id);
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setDob(request.getDob());
+        userMapper.updateUser(user, request);
         return userRepository.save(user);
     }
 
