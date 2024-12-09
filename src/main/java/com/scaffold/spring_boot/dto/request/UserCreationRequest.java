@@ -1,19 +1,25 @@
 package com.scaffold.spring_boot.dto.request;
 
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationRequest {
     @Size(min = 3, message = "USER_NAME_NOT_VALID")
-    private String username;
+    String username;
 
-    @Size(min = 8, message = "USER_PASSWORD_NOT_VALI")
-    private String password;
-    private String firstName;
-    private String lastName;
+    String lastName;
+    @Size(min = 8, message = "USER_PASSWORD_NOT_VALID")
+    String password;
+    String firstName;
 
-    private LocalDate dob;
+    LocalDate dob;
 }
