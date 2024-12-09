@@ -12,6 +12,7 @@ public enum ErrorCode {
     USER_NAME_NOT_VALID(400, "Username is not valid"),
     USER_PASSWORD_NOT_VALID(400, "UserPassword is not valid"),
     INVALID_KEY(400, "Invalid message key"),
+    AUTHENTICATION_FAILED(401, "Authentication failed"),
     ;
     private final int code;
     private final String message;
