@@ -1,12 +1,14 @@
 package com.scaffold.spring_boot.dto.request;
 
 import jakarta.annotation.Nullable;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserUpdateRequest {
     @Nullable
     private String password;
