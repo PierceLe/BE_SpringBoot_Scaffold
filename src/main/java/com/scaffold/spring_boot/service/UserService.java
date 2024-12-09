@@ -1,10 +1,8 @@
 package com.scaffold.spring_boot.service;
 
 
-import com.scaffold.spring_boot.dto.request.AuthenticationRequest;
 import com.scaffold.spring_boot.dto.request.UserCreationRequest;
 import com.scaffold.spring_boot.dto.request.UserUpdateRequest;
-import com.scaffold.spring_boot.dto.response.AuthenticationResponse;
 import com.scaffold.spring_boot.dto.response.UserResponse;
 import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.exception.AppException;
@@ -64,17 +62,4 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public AuthenticationResponse authenticateUser(AuthenticationRequest authenticationRequest) {
-        Users user = userRepository.findByUsername(authenticationRequest.getUsername());
-        if (user == null) {
-            throw new AppException(ErrorCode.AUTHENTICATION_FAILED);
-        }
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if (!passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
-            throw new AppException(ErrorCode.AUTHENTICATION_FAILED);
-        }
-        return AuthenticationResponse.builder()
-                .success(true)
-                .build();
-    }
 }
