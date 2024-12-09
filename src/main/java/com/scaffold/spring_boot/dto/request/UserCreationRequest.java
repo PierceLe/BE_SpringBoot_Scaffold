@@ -3,7 +3,6 @@ package com.scaffold.spring_boot.dto.request;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 
