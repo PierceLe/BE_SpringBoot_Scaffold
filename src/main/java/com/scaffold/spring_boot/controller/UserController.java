@@ -8,17 +8,16 @@ import com.scaffold.spring_boot.entity.Users;
 import com.scaffold.spring_boot.service.UserService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
-
+    private final UserService userService;
 
     @PostMapping
     public ApiResponse<Users> createUser(@RequestBody @Valid UserCreationRequest userCreationRequest) {
