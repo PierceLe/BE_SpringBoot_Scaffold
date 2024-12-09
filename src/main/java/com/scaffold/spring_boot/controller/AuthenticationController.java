@@ -6,6 +6,8 @@ import com.scaffold.spring_boot.dto.request.AuthenticationRequest;
 import com.scaffold.spring_boot.dto.request.IntrospectRequest;
 import com.scaffold.spring_boot.dto.response.AuthenticationResponse;
 import com.scaffold.spring_boot.dto.response.IntrospectResponse;
+import com.scaffold.spring_boot.exception.AppException;
+import com.scaffold.spring_boot.exception.ErrorCode;
 import com.scaffold.spring_boot.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +29,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/introspect")
-    public ApiResponse<IntrospectResponse> authenticateJwt(@RequestHeader("Authorization") @Valid IntrospectRequest request) throws ParseException, JOSEException {
-        return ApiResponse.<IntrospectResponse>builder()
-                .result(authenticationService.introspect(request))
-                .build();
+    public ApiResponse<IntrospectResponse> authenticateJwt(@RequestHeader("Authorization") @Valid IntrospectRequest request) {
+        try {
+            return ApiResponse.<IntrospectResponse>builder()
+                    .result(authenticationService.introspect(request))
+                    .build();
+        } catch (JOSEException | ParseException e) {
+            throw new AppException(ErrorCode.INVALID_JWT);
+        }
     }
 }

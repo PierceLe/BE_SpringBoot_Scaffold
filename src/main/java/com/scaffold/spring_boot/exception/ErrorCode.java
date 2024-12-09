@@ -13,6 +13,7 @@ public enum ErrorCode {
     USER_PASSWORD_NOT_VALID(400, "UserPassword is not valid"),
     INVALID_KEY(400, "Invalid message key"),
     AUTHENTICATION_FAILED(401, "Authentication failed"),
+    INVALID_JWT(400, "Invalid JWT"),
     ;
     private final int code;
     private final String message;
