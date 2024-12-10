@@ -23,7 +23,6 @@ public class UserService {
     private final UserMapper userMapper;
 
     public Users createUser(UserCreationRequest request) {
-        Users user = new Users();
 
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -35,7 +34,7 @@ public class UserService {
 //        user.setFirstName(request.getFirstName());
 //        user.setLastName(request.getLastName(
 // ------- same with this line----------------------------
-        user = userMapper.toUser(request);
+        Users user = userMapper.toUser(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepository.save(user);
