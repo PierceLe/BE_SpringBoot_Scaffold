@@ -1,25 +1,26 @@
 package com.scaffold.spring_boot.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private LocalDate dob;
+    String id;
+    String username;
+    String password;
+    String firstName;
+    String lastName;
+    LocalDate dob;
+    Set<String> roles;
 }
